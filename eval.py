@@ -8,7 +8,6 @@ import copy
 
 from nltk import sent_tokenize
 import numpy as np
-from rouge_score import rouge_scorer, scoring
 from tqdm import tqdm
 import sys
 import logging
@@ -95,6 +94,8 @@ def compute_rouge(data):
     Returns:
         dictionary representation of rouge scores
     """
+    from rouge_score import rouge_scorer, scoring
+
     def _rouge_calculation(hypotheses,
                         references1,
                         references2=[],
@@ -238,10 +239,14 @@ def compute_qa(data):
     }
 
 
-def compute_mauve(data):
-    """Compute Mauve score."""
+def compute_mauve(data, device_id=None):
+    """Compute Mauve score (human vs model distributions over question+answer strings)."""
 
     logger.info("Computing MAUVE...")
+    if device_id is None:
+        device_id = 0 if torch.cuda.is_available() else -1
+    logger.info("MAUVE featurization device_id=%s (-1=CPU, 0+=GPU)", device_id)
+
     human_data = []
     model_data = []
     for item in data:
@@ -255,7 +260,7 @@ def compute_mauve(data):
     out = mauve.compute_mauve(
         p_text=human_data,
         q_text=model_data,
-        device_id=0,
+        device_id=device_id,
         max_text_length=512,
         verbose=True,
         batch_size=8,
@@ -479,6 +484,20 @@ def main():
     parser.add_argument("--no_rouge", action="store_true", help="Do not evaluate ROUGE score")
     parser.add_argument("--qa", action="store_true", help="Use the QA model")
     parser.add_argument("--mauve", action="store_true", help="Use the mauve score model")
+    parser.add_argument(
+        "--mauve_device",
+        type=int,
+        default=None,
+        help="MAUVE featurization device: -1=CPU, 0,1,...=CUDA device index. Default: auto (0 if CUDA else CPU).",
+    )
+    parser.add_argument(
+        "--mauve_only",
+        action="store_true",
+        help=(
+            "Only compute MAUVE (implies --mauve and --no_rouge). Skips ROUGE, length/str_em, QA, AutoAIS, "
+            "and claims_nli; does not require the `rouge-score` package."
+        ),
+    )
     parser.add_argument("--citations", action="store_true", help="Evaluation with citation")
     parser.add_argument("--at_most_citations", type=int, default=3, help="At most take this many documents (mostly for precision)")
     parser.add_argument("--claims_nli", action="store_true", help="Use claims for ELI5")
@@ -488,11 +507,20 @@ def main():
 
     args = parser.parse_args()
 
+    if args.mauve_only:
+        args.mauve = True
+        args.no_rouge = True
+        args.qa = False
+        args.citations = False
+        args.claims_nli = False
+
     with open(args.f) as f:
         data_with_config = json.load(f)
     data = data_with_config['data'] 
 
     if "qampari" in args.f:
+        if args.mauve_only:
+            raise ValueError("MAUVE batch mode is not supported for QAMPARI result paths in eval.py (qampari disables mauve).")
         args.no_rouge = True
         args.qa = False
         args.mauve = False
@@ -515,20 +543,23 @@ def main():
         normalized_data[i]['output'] = remove_citations(normalized_data[i]['output'])
 
     result = {}
-    result['length'] = compute_len(normalized_data)
-    result['str_em'], result['str_hit'] = compute_str_em(normalized_data)
-    if qampari:
-        result.update(compute_qampari_f1(normalized_data, cot=args.cot))
-    if not args.no_rouge:
-        result['rougeLsum'] = compute_rouge(normalized_data)
-    if args.qa:
-        result.update(compute_qa(normalized_data))
-    if args.mauve:
-        result['mauve'] = compute_mauve(normalized_data)
-    if args.citations: 
-        result.update(compute_autoais(data, qampari=qampari, at_most_citations=args.at_most_citations))
-    if args.claims_nli:
-        result["claims_nli"] = compute_claims(normalized_data)
+    if args.mauve_only:
+        result["mauve"] = compute_mauve(normalized_data, device_id=args.mauve_device)
+    else:
+        result["length"] = compute_len(normalized_data)
+        result["str_em"], result["str_hit"] = compute_str_em(normalized_data)
+        if qampari:
+            result.update(compute_qampari_f1(normalized_data, cot=args.cot))
+        if not args.no_rouge:
+            result["rougeLsum"] = compute_rouge(normalized_data)
+        if args.qa:
+            result.update(compute_qa(normalized_data))
+        if args.mauve:
+            result["mauve"] = compute_mauve(normalized_data, device_id=args.mauve_device)
+        if args.citations:
+            result.update(compute_autoais(data, qampari=qampari, at_most_citations=args.at_most_citations))
+        if args.claims_nli:
+            result["claims_nli"] = compute_claims(normalized_data)
 
     print(result)
     with open(args.f + ".score", "w") as f:

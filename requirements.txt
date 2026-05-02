@@ -9,3 +9,6 @@ scikit-learn
 numpy
 tqdm
 nltk
+mauve-text
+# rouge-score: only required for ROUGE in eval.py (not for --mauve_only)
+rouge-score

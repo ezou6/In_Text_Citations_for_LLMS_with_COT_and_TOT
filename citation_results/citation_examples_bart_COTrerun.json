@@ -1,0 +1,218 @@
+{
+  "cot_llama_quick200_rerun.formatted.json": {
+    "good_examples": [
+      {
+        "question": "How black box attacks perform on larger and finite perturbation?",
+        "answer": "Black-box attacks can not be successful against a model that is robust to larger and finite perturbations [2].",
+        "output": "The performance of black box attacks on larger and finite perturbations is limited by the model's robustness to such perturbations [1][2]. Defenses that make models robust in a small neighborhood of the training manifold, such as gradient masking, can be evaded by the black-box approach, but making the model robust to larger and finite perturbations prevents the black-box attack [1][2]. The effectiveness of the black-box attack decreases as the perturbation size increases, with the attack being evaded for ε=0.3 [2]. In contrast to small and infinitesimal perturbations, which can be evaded by black-box attacks, larger and finite perturbations can prevent such attacks [2]. Therefore, making a machine learning model robust to larger and finite perturbations is a more promising avenue for defending against black-box attacks [1]. Overall, the black-box attack can be evaded by making the model robust to larger and finite perturbations, as shown in [2].",
+        "docs": [
+          {
+            "title": "Practical Black-Box Attacks against Machine Learning",
+            "text": "Defenses which make models robust in a small neighborhood of the training manifold perform gradient masking: they smooth the decision surface and reduce gradients used by adversarial crafting in small neighborhoods. However, using a substitute and our black-box approach evades these defenses, as the substitute model is not trained to be robust to the said small perturbations. We conclude that defending against finite perturbations is a more promising avenue for future work than defending against infinitesimal perturbations."
+          },
+          {
+            "title": "Practical Black-Box Attacks against Machine Learning",
+            "text": "Adversarial training: It was shown that injecting adversarial examples throughout training increases the robustness of significantly descriptive models, such as DNNs (4, 14, 17). We implemented an approximation of this defense using the Google Prediction API. Since the API does not support the generation of adversarial examples at every step of training, as a correct implementation of adversarial training would do, we instead inject a large amount of adversarial examples infrequently. After training in this way, the model has a misclassification rate of 8.75%percent8.758.75\\% on the unperturbed test set, but the adversarial misclassification rate rises to 100%percent100100\\% when ρ=6𝜌6\\rho=6. To evaluate this defense strategy using a correct implementation, we resort to training the oracle locally, using our own codebase that includes support for generating adversarial examples at each step. After each training batch, we compute and train on adversarial examples generated with the fast gradient sign method before starting training on the next batch of the original training data. Results are given in Table 4. We observe that for ε=0.15𝜀0.15\\varepsilon=0.15, the defense can be evaded using the black-box attack with adversarial examples crafted on the substitute and misclassified by the oracle at rates up to 71.25%percent71.2571.25\\%. However, for ε=0.3𝜀0.3\\varepsilon=0.3, the black-box attack is not effective anymore. Therefore, making a machine learning model robust to small and infinitesimal perturbations of its inputs is an example of gradient masking and can be evaded using our substitute-based black-box approach. However, making the model robust to larger and finite perturbations prevents the black-box attack. To confirm this hypothesis, we now show that defensive distillation, which makes the model robust to infinitesimal perturbations, can be evaded by the black-box approach."
+          },
+          {
+            "title": "Practical Black-Box Attacks against Machine Learning",
+            "text": "In this paper, we introduce the first demonstration that black-box attacks against DNN classifiers are practical for real-world adversaries with no knowledge about the model. We assume the adversary (a) has no information about the structure or parameters of the DNN, and (b) does not have access to any large training dataset. The adversary’s only capability is to observe labels assigned by the DNN for chosen inputs, in a manner analog to a cryptographic oracle."
+          }
+        ],
+        "citation_recall": 1.0,
+        "citation_precision": 0.8333333333333334
+      },
+      {
+        "question": "In BUIR, how does the online encoder updated compared to the target encoder?",
+        "answer": "The online encoder is updated to minimize the error between the output and the target and updated by the gradients back-propagated from the loss, but target network is updated based on the momentum update and updated as the moving average of the online encoder [1].",
+        "output": "The online encoder in BUIR is updated to minimize the error between its output and the target, whereas the target encoder is slowly updated based on the momentum update [1]. The update equations for the online and target encoders are given by θ←θ−η⋅∇θℒθ,ξ and ξ←τ⋅ξ+(1−τ)⋅θ, respectively [3]. This means that the target encoder is updated as a moving average of the online encoder, with the momentum coefficient τ controlling the speed of the update [3]. The online encoder is effectively optimized by the gradients back-propagated from the loss, while the target encoder evolves more slowly than the online encoder due to the momentum-based update [1][3]. By taking a large value of τ, the target encoder slowly approximates the online encoder, enabling the bootstrapping of representations by providing enhanced but consistent targets to the online encoders [3]. Overall, the difference in update methods between the online and target encoders is a key aspect of the BUIR framework, allowing for the effective learning of representations [1][3].",
+        "docs": [
+          {
+            "title": "Bootstrapping User and Item Representations for One-Class Collaborative Filtering",
+            "text": "BUIR makes use of two distinct encoder networks that have the same structure: online encoder fθsubscript𝑓𝜃f_{\\theta} and target encoder fξsubscript𝑓𝜉f_{\\xi}. They are parameterized by θ𝜃\\theta and ξ𝜉\\xi, respectively. The key idea of BUIR is to train the online encoder by using outputs of the target encoder as its target, while gradually improving the target encoder as well. The main difference of BUIR from existing end-to-end learning frameworks is that fθsubscript𝑓𝜃f_{\\theta} and fξsubscript𝑓𝜉f_{\\xi} are updated in different ways. The online encoder is trained to minimize the error between its output and the target, whereas the target network is slowly updated based on the momentum update (He et al., 2020b) so as to keep its output consistent."
+          },
+          {
+            "title": "Bootstrapping User and Item Representations for One-Class Collaborative Filtering",
+            "text": "Figure 6 clearly shows that the performance is hardly affected by τ𝜏\\tau in the range of (0.9, 1.0). In other words, any values of τ𝜏\\tau larger than 0.9 allow the target encoder to successfully provide the target representations to the online encoder, by slowly approximating the online encoder; on the contrary, BUIR cannot learn the effective representations at all in case that the target encoder is fixed (i.e., τ=1𝜏1\\tau=1). This observation is consistent with previous work on momentum-based moving average (Tarvainen and Valpola, 2017; He et al., 2020b; Grill et al., 2020) that showed all values of τ𝜏\\tau between 0.9 and 0.999 can yield the best performance. Furthermore, BUIR performs the best with a single-layer predictor, because a multi-layer predictor makes it difficult to optimize the relationship between outputs of the two encoder networks. In conclusion, BUIR is more powerful even with fewer hyperparameters, compared to existing OCCF methods that include a variety of regularization terms or modeling components."
+          },
+          {
+            "title": "Bootstrapping User and Item Representations for One-Class Collaborative Filtering",
+            "text": "To sum up, the parameters of the online encoder and target encoder are optimized by   (4)  θ←θ−η⋅∇θℒθ,ξξ←τ⋅ξ+(1−τ)⋅θ.←𝜃𝜃⋅𝜂subscript∇𝜃subscriptℒ𝜃𝜉𝜉←⋅𝜏𝜉⋅1𝜏𝜃\\begin{split}\\theta&\\leftarrow\\theta-\\eta\\cdot\\nabla_{\\theta}\\mathcal{L}_{\\theta,\\xi}\\\\ \\xi&\\leftarrow\\tau\\cdot\\xi+(1-\\tau)\\cdot\\theta.\\end{split}    η𝜂\\eta is the learning rate for stochastic optimization, and τ∈(0,1)𝜏01\\tau\\in(0,1) is a momentum coefficient (also called as target decay) for momentum-based moving average. The online encoder fθsubscript𝑓𝜃f_{\\theta} (and the predictor qθsubscript𝑞𝜃q_{\\theta}) is effectively optimized by the gradients back-propagated from the loss (Equation (3)), while the target encoder fξsubscript𝑓𝜉f_{\\xi} is updated as the moving average of the online encoder. By taking a large value of τ𝜏\\tau, the target encoder slowly approximates the online encoder. This momentum-based update makes ξ𝜉\\xi evolve more slowly than θ𝜃\\theta, which enables to bootstrap the representations by providing enhanced but consistent targets to the online encoders (He et al., 2020b; Grill et al., 2020). Figure 1 illustrates the overall framework of BUIR with the simple one-hot encoders."
+          }
+        ],
+        "citation_recall": 1.0,
+        "citation_precision": 0.9166666666666666
+      },
+      {
+        "question": "What is kernel size used in each layer of SegNet?",
+        "answer": "The kernel size used in each layer of SegNet is 7*7 [2].",
+        "output": "The kernel size used in each layer of SegNet is 7×7 [1][2]. This constant kernel size is used to provide a wide context for smooth labeling, with a trade-off between the size of the context window and retaining thin structures [1]. The use of a constant kernel size across all layers allows for a spatial context of 106×106 pixels when a feature-map is backtracked to the input image in a 4-layer SegNet [2]. This design choice is motivated by the need to balance the size of the context window with the preservation of thin structures in the scene [1]. Overall, the kernel size of 7×7 is a key component of the SegNet architecture, enabling it to achieve high accuracy in pixel-wise labelling tasks [1][2].",
+        "docs": [
+          {
+            "title": "SegNet: A Deep Convolutional Encoder-Decoder Architecture for Image Segmentation",
+            "text": "SegNet uses a “flat” architecture, i.e, the number of features in each layer remains the same (646464 in our case) but with full connectivity. This choice is motivated by two reasons. First, it avoids parameter explosion, unlike an expanding deep encoder network with full feature connectivity (same for decoder). Second, the training time remains the same (in our experiments it slightly decreases) for each additional/deeper encoder-decoder pair as the feature map resolution is smaller which makes convolutions faster. Note that the decoder corresponding to the first encoder (closest to the input image) produces a multi-channel feature map although the encoder input is either 3 or 4 channels (RGB or RGBD) (see Fig. 1). This high dimensional feature representation is fed to the soft-max classifier. This is unlike the other decoders which produce feature maps the same size as their encoder inputs. A fixed pooling window of 2×2222\\times 2 with a stride of non-overlapping 222 pixels is used. This small size preserves thin structures in the scene. Further, a constant kernel size of 7×7777\\times 7 over all the layers was chosen to provide a wide context for smooth labelling i.e. a pixel in the deepest layer feature map can be traced back to a context window in the input image of 106×106106106106\\times 106 pixels. The trade-off here is between the size of the context window and retaining thin structures. Smaller kernels decrease context and larger ones potentially destroy thin structures."
+          },
+          {
+            "title": "SegNet: A Deep Convolutional Encoder-Decoder Architecture for Image Segmentation",
+            "text": "We draw inspiration of our encoder-decoder type architectures from probabilistic auto-encoders used to build generative models  and unsupervised learning of feature hierarchies . Our main contribution is to learn an encoder-decoder stack trained in a modular and fully supervised manner for pixel-wise labelling. The addition of each deeper encoder-decoder pair results in an increased spatial context i.e., a 444 layer SegNet with 7×7777\\times 7 kernels and 2×2222\\times 2 non-overlapping max pooling in each layer has a spatial context of 106×106106106106\\times 106 pixels when a feature-map is backtracked to the input image. The SegNet predictions get smoother as more layers are added and demonstrate high accuracy, comparable to or even exceeding methods which use CRFs . SegNet maintains a constant number of features per layer which is typically set to 646464. This has a practical advantage that the computational cost successively decreases for each additional/deeper encoder-decoder pair."
+          },
+          {
+            "title": "SegNet: A Deep Convolutional Encoder-Decoder Architecture for Image Segmentation",
+            "text": "A four layer SegNet architecture used in our experiments is illustrated in Fig. 1. Each encoder performs dense convolutions, ReLU non-linearity, a non-overlapping max pooling with a 2×2222\\times 2 window and finally down-sampling. Each decoder upsamples its input using the memorized pooled indices and convolves it with a trainable filter bank. No ReLU non-linearity is used in the decoder unlike the deconvolution network (41, 42). This makes it easier to optimize the filters in each pair. The encoder and decoder filters are also untied to provide additional degrees of freedom to minimize the objective. The final layer is a soft-max classifier (with no bias term) which classifies each pixel independently. The output of the soft-max is a K channel image where K is the number of classes."
+          }
+        ],
+        "citation_recall": 1.0,
+        "citation_precision": 0.9
+      },
+      {
+        "question": "What are quantized depth planes, probabilistic disparity maps, and view-dependent flow fields?",
+        "answer": "quantized depth planes, probabilistic disparity maps, and view-dependent flow fields are methods to represent the underlying geometry of the scene [1].",
+        "output": "Quantized depth planes, probabilistic disparity maps, and view-dependent flow fields are representations of the underlying geometry in a scene, used in methods such as DeepStereo, Deep3D, and Appearance Flows for warping-based view synthesis [1]. Specifically, DeepStereo uses quantized depth planes, Deep3D uses probabilistic disparity maps, and Appearance Flows uses view-dependent flow fields to transform the input based on depth or flow and synthesize novel views [1]. These representations are crucial for novel view synthesis, which involves synthesizing the appearance of a scene from novel camera viewpoints [1].",
+        "docs": [
+          {
+            "title": "Unsupervised Learning of Depth and Ego-Motion from Video",
+            "text": "One important application of geometric scene understanding is the task of novel view synthesis, where the goal is to synthesize the appearance of the scene seen from novel camera viewpoints. A classic paradigm for view synthesis is to first either estimate the underlying 3D geometry explicitly or establish pixel correspondence among input views, and then synthesize the novel views by compositing image patches from the input views (e.g., (4, 55, 43, 6, 9)). Recently, end-to-end learning has been applied to reconstruct novel views by transforming the input based on depth or flow, e.g., DeepStereo , Deep3D  and Appearance Flows . In these methods, the underlying geometry is represented by quantized depth planes (DeepStereo), probabilistic disparity maps (Deep3D) and view-dependent flow fields (Appearance Flows), respectively. Unlike methods that directly map from input views to the target view (e.g., ), warping-based methods are forced to learn intermediate predictions of geometry and/or correspondence. In this work, we aim to distill such geometric reasoning capability from CNNs trained to perform warping-based view synthesis."
+          },
+          {
+            "title": "Unsupervised Learning of Depth and Ego-Motion from Video",
+            "text": "For single-view depth prediction, we adopt the DispNet architecture proposed in  that is mainly based on an encoder-decoder design with skip connections and multi-scale side predictions (see Figure 4). All conv layers are followed by ReLU activation except for the prediction layers, where we use 1/(α∗s​i​g​m​o​i​d​(x)+β)1𝛼𝑠𝑖𝑔𝑚𝑜𝑖𝑑𝑥𝛽1/(\\alpha*sigmoid(x)+\\beta) with α=10𝛼10\\alpha=10 and β=0.01𝛽0.01\\beta=0.01 to constrain the predicted depth to be always positive within a reasonable range. We also experimented with using multiple views as input to the depth network, but did not find this to improve the results. This is in line with the observations in , where optical flow constraints need to be enforced to utilize multiple views effectively."
+          },
+          {
+            "title": "Unsupervised Learning of Depth and Ego-Motion from Video",
+            "text": "One remaining issue with the above learning pipeline is that the gradients are mainly derived from the pixel intensity difference between I​(pt)𝐼subscript𝑝𝑡I(p_{t}) and the four neighbors of I​(ps)𝐼subscript𝑝𝑠I(p_{s}), which would inhibit training if the correct pssubscript𝑝𝑠p_{s} (projected using the ground-truth depth and pose) is located in a low-texture region or far from the current estimation. This is a well known issue in motion estimation . Empirically, we found two strategies to be effective for overcoming this issue: 1) using a convolutional encoder-decoder architecture with a small bottleneck for the depth network that implicitly constrains the output to be globally smooth and facilitates gradients to propagate from meaningful regions to nearby regions; 2) explicit multi-scale and smoothness loss (e.g., as in (14, 16)) that allows gradients to be derived from larger spatial regions directly. We adopt the second strategy in this work as it is less sensitive to architectural choices. For smoothness, we minimize the L1subscript𝐿1L_{1} norm of the second-order gradients for the predicted depth maps (similar to )."
+          }
+        ],
+        "citation_recall": 1.0,
+        "citation_precision": 1.0
+      },
+      {
+        "question": "How did they finetune GPT3?",
+        "answer": "The authors fine-tuned the GPT3 model via an OpenAI API [3]. The model, which is also called \"da vinci\", was dine-tuned by the authors for 2 epochs with a prompt loss weight set to zero [2].",
+        "output": "The GPT3 model was finetuned using the OpenAI finetuning API, with the default hyper-parameters except for setting the prompt loss weight to 0, and training the model for 2 epochs [2]. The finetuning process involved concatenating the instruction and input using various templates, and training the model to generate the output [2]. The resulting model, denoted by GPT3Self-Inst, demonstrated improved performance on instruction-following tasks compared to the vanilla GPT3 model [1]. Additionally, the performance of GPT3Self-Inst was evaluated and compared to other instruction-tuned models, including InstructGPT, and was found to be close in performance, with only a 5% difference when considering acceptable responses with minor imperfections [1]. Overall, the finetuning of GPT3 using self-generated instructions showed promising results, with potential for future improvement through enhancing the quality of the generated data [1][2].",
+        "docs": [
+          {
+            "title": "Self-Instruct: Aligning Language Model with Self Generated Instructions",
+            "text": "Figure 6 shows the performance of GPT3 model and its instruction-tuned counterparts on this newly written instruction set (w. inter-rater agreement κ=0.57𝜅0.57\\kappa=0.57 on the 4-class categorical scale, see Appendix B for details). As anticipated, the vanilla GPT3 LM is largely unable to respond to instructions, and all instruction-tuned models demonstrate comparatively higher performance. Nonetheless, GPT3Self-InstSelf-Inst{}_{\\textsc{Self-Inst}} (i.e., GPT3 model finetuned with Self-Instruct) outperforms those counterparts trained on T00 or SuperNI data by a large margin, demonstrating the value of the generated data despite the noise. Compared with InstructGPT001subscriptInstructGPT001\\text{InstructGPT}_{\\text{001}}, GPT3Self-InstSelf-Inst{}_{\\textsc{Self-Inst}} is quite close in performance—if we count acceptable response with minor imperfections (Rating-B) as valid, GPT3Self-InstSelf-Inst{}_{\\textsc{Self-Inst}} is only 5% behind InstructGPT001subscriptInstructGPT001\\text{InstructGPT}_{\\text{001}}. Lastly, our evaluation confirms the impressive instruction-following ability of InstructGPT002subscriptInstructGPT002\\text{InstructGPT}_{\\text{002}} and InstructGPT003subscriptInstructGPT003\\text{InstructGPT}_{\\text{003}}. Although there are many factors behind this success, we conjecture that future work can largely benefit from improving the quality of our generated data by using human annotators or training a reward model to select better generations, similar to the algorithm used by Ouyang et al. (2022)."
+          },
+          {
+            "title": "Self-Instruct: Aligning Language Model with Self Generated Instructions",
+            "text": "Given the instruction-generated instruction data, we conduct instruction tuning with the GPT3 model itself (“davinci” engine). As described in §2.3, we use various templates to concatenate the instruction and input, and train the model to generate the output. This finetuning is done through the OpenAI finetuning API.888See OpenAI’s documentation on finetuning.  We use the default hyper-parameters, except that we set the prompt loss weight to 0, and we train the model for 2 epochs. We refer the reader to Appendix A.3 for additional finetuning details. The resulting model is denoted by GPT3Self-InstSelf-Inst{}_{\\textsc{Self-Inst}}."
+          },
+          {
+            "title": "Self-Instruct: Aligning Language Model with Self Generated Instructions",
+            "text": "In this section, we apply our method for inducing instruction data to GPT3 as a case study. We use the largest GPT3 LM (“davinci” engine) accessed through the OpenAI API.666https://openai.com/api/ The parameters for making queries are described in Appendix A.2. Here we present an overview of the generated data."
+          }
+        ],
+        "citation_recall": 1.0,
+        "citation_precision": 0.9
+      }
+    ],
+    "bad_examples": [
+      {
+        "question": "What are the motivation behind choosing TREC-COVID for analysis on annotation bias?",
+        "answer": "This dataset could be made unbiased by manual annotations [2].",
+        "output": "The motivation behind choosing TREC-COVID for analysis on annotation bias is to study the impact of annotation bias on the evaluation of information retrieval models [1]. TREC-COVID's pooling method, which aimed to reduce the impact of annotation bias, provides a unique opportunity to analyze this issue [1]. Additionally, the dataset's potential lexical bias, which can affect non-lexical approaches, is another motivation for this analysis [2]. The study on TREC-COVID highlights the challenge of evaluating new models on existing datasets and the need for better datasets that use diverse pooling strategies [3]. By analyzing TREC-COVID, researchers can gain insights into the effects of annotation bias and work towards creating more unbiased datasets [1][2]. Furthermore, the findings from this study can inform the development of more robust evaluation methodologies for information retrieval models [1][3]. Overall, the choice of TREC-COVID for analysis on annotation bias is driven by its unique characteristics and the potential to advance our understanding of annotation bias in information retrieval [1][2][3].",
+        "docs": [
+          {
+            "title": "BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models",
+            "text": "In order to study the impact of this particular type of bias, we conducted a study on the recent TREC-COVID dataset. TREC-COVID used a pooling method (38, 40) to reduce the impact of the aforementioned bias: The annotation set was constructed by using the search results from the various systems participating in the challenge. Table 4 shows the Hole@10 rate  for the tested systems, i.e., how many top-10 hits is each system retrieving that have not been seen by annotators."
+          },
+          {
+            "title": "BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models",
+            "text": "Finally, we notice that there can be a strong lexical bias present in datasets included within the benchmark, likely as lexical models are pre-dominantly used during the annotation or creation of datasets. This can give an unfair disadvantage to non-lexical approaches. We analyze this for the TREC-COVID  dataset: We manually annotate the missing relevance judgements for the tested systems and see a significant performance improvement for non-lexical approaches. Hence, future work requires better unbiased datasets that allow a fair comparison for all types of retrieval systems."
+          },
+          {
+            "title": "BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models",
+            "text": "Our study on annotation selection bias highlights the challenge of evaluating new models on existing datasets: Even though TREC-COVID is based on the predictions from many systems, contributed by a diverse set of teams, we found largely different Hole@10 rates for the tested systems, negatively affecting non-lexical approaches. Better datasets, that use diverse pooling strategies, are needed for a fair evaluation of retrieval approaches. By integrate a large number of diverse retrieval systems into BEIR, creating such diverse pools becomes significantly simplified."
+          }
+        ],
+        "citation_recall": 0.0,
+        "citation_precision": 0.0
+      },
+      {
+        "question": "How well RoBERTa language modeling on Wiki-40B?",
+        "answer": "RoBERTa performs at about 26 BPC on the MLM task with the Wiki-40B dataset [3]. RoBERTa performs better than BERT [3].",
+        "output": "Unfortunately, the provided passages do not directly answer the question of how well RoBERTa language modeling performs on Wiki-40B [3][1]. However, Passage [3] introduces the Wiki-40B dataset, which is used to measure the perplexity of English pretrained MLMs, including RoBERTa [3]. Additionally, Passage [1] mentions that RoBERTa reduces the gap with multilingual models on modeling other languages, which may be related to its performance on Wiki-40B [1]. Passage [2] discusses the differences in performance between RoBERTa and other models on non-English text, but does not provide specific information on RoBERTa's performance on Wiki-40B [2]. To determine RoBERTa's performance on Wiki-40B, additional information or passages would be necessary [3][1][2].",
+        "docs": [
+          {
+            "title": "Language Contamination Helps Explain the Cross-lingual Capabilities of English Pretrained Models",
+            "text": "We find that both BERT models perform notably worse on modeling other languages; however, RoBERTa, reduces the gap with the multilingual models from 2.51 BPC to 0.87 BPC (Figure 2(a)). This finding is consistent with Tran (2020), who also found RoBERTa transfers well cross-lingually."
+          },
+          {
+            "title": "Language Contamination Helps Explain the Cross-lingual Capabilities of English Pretrained Models",
+            "text": "This difference is likely due to two factors. First, in terms of relative percentages, RoBERTa is exposed to more non-English text than T5 (0.78% compared to only 0.22%). Secondly, RoBERTa’s subword vocabulary is robust to unexpected inputs and does not substitute an UNK token any input tokens; in contrast, T5 and BERT have high rates of UNK tokens for some non-Latin languages (Appendix B).555UNK tokens refer to placeholder tokens used when the model receives an input not covered by its vocabulary. However, for many high-resource languages the English models perform competitively, with T5 outperforming mBERT on German and Portuguese, among others."
+          },
+          {
+            "title": "Language Contamination Helps Explain the Cross-lingual Capabilities of English Pretrained Models",
+            "text": "We first measure the perplexity of English pretrained MLMs in other languages. We use Wiki-40B, a multilingual language modeling dataset that covers 41 languages Guo et al. (2020). Following the Wiki-40B paper, we report bits per character (BPC) to allow comparison between models with different tokenizations of the text."
+          }
+        ],
+        "citation_recall": 0.0,
+        "citation_precision": 0.0
+      },
+      {
+        "question": "Is hyperparameter optimization performed independently for the two dataset corpora?",
+        "answer": "Yes, it does appear that hyperparameter optimization for each dataset is performed independently [1].",
+        "output": "Hyperparameter optimization is performed independently for the two dataset corpora, as stated in [1], where it is mentioned that all model hyperparameters were tuned on the respective validation sets of the two corpora. This indicates that the hyperparameter optimization process is tailored to each corpus separately, allowing for the identification of the best hyperparameters for each dataset [1]. The other passages, [2] and [3], do not provide relevant information regarding hyperparameter optimization, as they focus on the creation of the machine reading corpora [2] and the procedure for anonymizing and randomizing the corpora [3], respectively. Therefore, the information provided in [1] is sufficient to answer the question, and no additional insights are gained from [2] or [3].",
+        "docs": [
+          {
+            "title": "Teaching Machines to Read and Comprehend",
+            "text": "All model hyperparameters were tuned on the respective validation sets of the two corpora.555For the Deep LSTM Reader, we consider hidden layer sizes (64,128,256¯)64128¯256{(64,128,\\underline{256})}, depths (1,2¯,4)1¯24{(1,\\underline{2},4)}, initial learning rates (1​e−3,5​e−4,1​e−4¯,5​e−5)1e35e4¯1e45e5{(1\\text{\\sc{e}}{-}3,5\\text{\\sc{e}}{-}4,\\underline{1\\text{\\sc{e}}{-}4},5\\text{\\sc{e}}{-}5)}, batch sizes (16,32¯)16¯32{(16,\\underline{32})} and dropout (0.0,0.1¯,0.2)0.0¯0.10.2(0.0,\\underline{0.1},0.2). We evaluate two types of feeds. In the cqa setup we feed first the context document and subsequently the question into the encoder, while the qca model starts by feeding in the question followed by the context document. We report results on the best model (underlined hyperparameters, qca setup). For the attention models we consider hidden layer sizes (64,128,256)64128256(64,128,256), single layer, initial learning rates (1​e−4,5​e−5,2.5​e−5,1​e−5)1e45e52.5e51e5(1\\text{\\sc{e}}{-}4,5\\text{\\sc{e}}{-}5,2.5\\text{\\sc{e}}{-}5,1\\text{\\sc{e}}{-}5), batch sizes (8,16,32)81632(8,16,32) and dropout (0,0.1,0.2,0.5)00.10.20.5(0,0.1,0.2,0.5). For all models we used asynchronous RmsProp  with a momentum of 0.90.90.9 and a decay of 0.950.950.95. See Appendix A for more details of the experimental setup. Our experimental results are in Table 5, with the Attentive and Impatient Readers performing best across both datasets."
+          },
+          {
+            "title": "Teaching Machines to Read and Comprehend",
+            "text": "Here we propose a methodology for creating real-world, large scale supervised training data for learning reading comprehension models. Inspired by work in summarisation (10, 11), we create two machine reading corpora by exploiting online newspaper articles and their matching summaries. We have collected 93k articles from the CNN111www.cnn.com and 220k articles from the Daily Mail222www.dailymail.co.uk websites. Both news providers supplement their articles with a number of bullet points, summarising aspects of the information contained in the article. Of key importance is that these summary points are abstractive and do not simply copy sentences from the documents. We construct a corpus of document–query–answer triples by turning these bullet points into Cloze  style questions by replacing one entity at a time with a placeholder. This results in a combined corpus of roughly 1M data points (Table 1). Code to replicate our datasets—and to apply this method to other sources—is available online333http://www.github.com/deepmind/rc-data/."
+          },
+          {
+            "title": "Teaching Machines to Read and Comprehend",
+            "text": "To prevent such degenerate solutions and create a focused task we anonymise and randomise our corpora with the following procedure,   a) use a coreference system to establish coreferents in each data point;  b) replace all entities with abstract entity markers according to coreference;  c) randomly permute these entity markers whenever a data point is loaded."
+          }
+        ],
+        "citation_recall": 0.0,
+        "citation_precision": 0.0
+      },
+      {
+        "question": "How input image resolution affects the accuracy of the SSD framework?",
+        "answer": "The accuracy of SSD framework is relatively more on higher resolution images than on lower resolution images [3].",
+        "output": "The accuracy of the SSD framework is affected by the input image resolution, with higher resolutions improving the detection of small objects [1]. Increasing the input size from 300×300 to 512×512 can help improve detecting small objects [1], and experimental results show that this increase in resolution can lead to a",
+        "docs": [
+          {
+            "title": "SSD: Single Shot MultiBox Detector",
+            "text": "To understand the performance of our two SSD models in more details, we used the detection analysis tool from . Figure 3 shows that SSD can detect various object categories with high quality (large white area). The majority of its confident detections are correct. The recall is around 85-90%, and is much higher with “weak” (0.1 jaccard overlap) criteria. Compared to R-CNN , SSD has less localization error, indicating that SSD can localize objects better because it directly learns to regress the object shape and classify object categories instead of using two decoupled steps. However, SSD has more confusions with similar object categories (especially for animals), partly because we share locations for multiple categories. Figure 4 shows that SSD is very sensitive to the bounding box size. In other words, it has much worse performance on smaller objects than bigger objects. This is not surprising because those small objects may not even have any information at the very top layers. Increasing the input size (e.g. from 300×300300300300\\times 300 to 512×512512512512\\times 512) can help improve detecting small objects, but there is still a lot of room to improve. On the positive side, we can clearly see that SSD performs really well on large objects. And it is very robust to different object aspect ratios because we use default boxes of various aspect ratios per feature map location."
+          },
+          {
+            "title": "SSD: Single Shot MultiBox Detector",
+            "text": "We use the same settings as those used for our basic VOC2007 experiments above, except that we use VOC2012 trainval and VOC2007 trainval and test (21503 images) for training, and test on VOC2012 test (10991 images). We train the models with 10−3superscript10310^{-3} learning rate for 60k iterations, then 10−4superscript10410^{-4} for 20k iterations. Table 4 shows the results of our SSD300 and SSD512444\\ssmallhttp://host.robots.ox.ac.uk:8080/leaderboard/displaylb.php?cls=mean&challengeid=11&compid=4 model. We see the same performance trend as we observed on VOC2007 test. Our SSD300 improves accuracy over Fast/Faster R-CNN. By increasing the training and testing image size to 512×512512512512\\times 512, we are 4.5% more accurate than Faster R-CNN. Compared to YOLO, SSD is significantly more accurate, likely due to the use of convolutional default boxes from multiple feature maps and our matching strategy during training. When fine-tuned from models trained on COCO, our SSD512 achieves 80.0% mAP, which is 4.1% higher than Faster R-CNN."
+          },
+          {
+            "title": "SSD: Single Shot MultiBox Detector",
+            "text": "This paper presents the first deep network based object detector that does not resample pixels or features for bounding box hypotheses and and is as accurate as approaches that do. This results in a significant improvement in speed for high-accuracy detection (59 FPS with mAP 74.3% on VOC2007 test, vs. Faster R-CNN 7 FPS with mAP 73.2% or YOLO 45 FPS with mAP 63.4%). The fundamental improvement in speed comes from eliminating bounding box proposals and the subsequent pixel or feature resampling stage. We are not the first to do this (cf (4, 5)), but by adding a series of improvements, we manage to increase the accuracy significantly over previous attempts. Our improvements include using a small convolutional filter to predict object categories and offsets in bounding box locations, using separate predictors (filters) for different aspect ratio detections, and applying these filters to multiple feature maps from the later stages of a network in order to perform detection at multiple scales. With these modifications—especially using multiple layers for prediction at different scales—we can achieve high-accuracy using relatively low resolution input, further increasing detection speed. While these contributions may seem small independently, we note that the resulting system improves accuracy on real-time detection for PASCAL VOC from 63.4% mAP for YOLO to 74.3% mAP for our SSD. This is a larger relative improvement in detection accuracy than that from the recent, very high-profile work on residual networks . Furthermore, significantly improving the speed of high-quality detection can broaden the range of settings where computer vision is useful."
+          }
+        ],
+        "citation_recall": 0.0,
+        "citation_precision": 0.0
+      },
+      {
+        "question": "What is the difference between a 1-d CNN and a 2-layer highway network?",
+        "answer": "The paper does not discuss the difference between 1D CNN and highway networks [1].",
+        "output": "The difference between a 1-d CNN and a 2-layer highway network is not explicitly detailed in the provided passages in terms of architectural specifics or functional differences. However, [1] mentions the use of a 1-d CNN for processing words and a 2-layer highway network for learning semantic representations, suggesting that the 1-d CNN is used for feature extraction, while the highway network is used for further processing and representation learning. This distinction implies that the 1-d CNN serves as an initial processing step, potentially extracting low-level features from the input data, whereas the 2-layer highway network builds upon these features to learn more complex, semantic representations [1]. The specific architectural differences, such as the number of layers, the type of connections, or the activation functions used, are not explicitly compared in the provided passages [1].",
+        "docs": [
+          {
+            "title": "Exploring the Limits of Language Modeling",
+            "text": "In (Kim et al., 2015), the words characters are processed by a 1-d CNN (Le Cun et al., 1990) with max-pooling across the sequence for each convolutional feature. The resulting features are fed to a 2-layer highway network (Srivastava et al., 2015b), which allows the embedding to learn semantic representations. The model was evaluated on small-scale language modeling experiments for various languages and matched the best results on the PTB data set despite having 60% fewer parameters."
+          },
+          {
+            "title": "Exploring the Limits of Language Modeling",
+            "text": "zw=hT​C​N​N​(c​h​a​r​sw)+hT​M​c​o​r​rwsubscript𝑧𝑤superscriptℎ𝑇𝐶𝑁𝑁𝑐ℎ𝑎𝑟subscript𝑠𝑤superscriptℎ𝑇𝑀𝑐𝑜𝑟subscript𝑟𝑤z_{w}=h^{T}CNN(chars_{w})+h^{T}Mcorr_{w}    where M𝑀M is a matrix projecting a low-dimensional embedding vector c​o​r​rw𝑐𝑜𝑟subscript𝑟𝑤corr_{w} back up to the dimensionality of the projected LSTM hidden state of hℎh. This amounts to adding a bottleneck linear layer, and brings the CNN Softmax much closer to our best result, as can be seen in Table 1, where adding a 128-dim correction halves the gap between regular and the CNN Softmax."
+          },
+          {
+            "title": "Exploring the Limits of Language Modeling",
+            "text": "p​(Y=k|W)∝Ypd​(wk)pn​(wk)subscriptproportional-to𝑌𝑝𝑌conditional𝑘𝑊subscript𝑝𝑑subscript𝑤𝑘subscript𝑝𝑛subscript𝑤𝑘p(Y=k|W)\\propto_{Y}\\frac{p_{d}(w_{k})}{p_{n}(w_{k})}    and, following a similar argument than for NCE, if we define p​(Y=k|W)=s​o​f​t​m​a​x​(sθ​(wk)−log⁡pn​(wk))𝑝𝑌conditional𝑘𝑊𝑠𝑜𝑓𝑡𝑚𝑎𝑥subscript𝑠𝜃subscript𝑤𝑘subscript𝑝𝑛subscript𝑤𝑘p(Y=k|W)=softmax(s_{\\theta}(w_{k})-\\log p_{n}(w_{k})) then p′​(w)=s​o​f​t​m​a​x​(sθ​(w,h))superscript𝑝′𝑤𝑠𝑜𝑓𝑡𝑚𝑎𝑥subscript𝑠𝜃𝑤ℎp^{\\prime}(w)=softmax(s_{\\theta}(w,h)) is a good approximation of pd​(w​o​r​d)subscript𝑝𝑑𝑤𝑜𝑟𝑑p_{d}(word). Note that the only difference between NCE and IS is that, in NCE, we define a binary classification task between true or noise words with a logistic loss, whereas in IS we define a multiclass classification problem with a Softmax and cross entropy loss. We hope that our derivation helps clarify the similarities and differences between the two. In particular, we observe that IS, as it optimizes a multiclass classification task (in contrast to solving a binary task), may be a better choice. Indeed, the updates to the logits with IS are tied whereas in NCE they are independent."
+          }
+        ],
+        "citation_recall": 0.0,
+        "citation_precision": 0.0
+      }
+    ]
+  }
+}
