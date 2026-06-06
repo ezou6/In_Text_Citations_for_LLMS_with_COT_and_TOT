@@ -1,11 +1,11 @@
 # Enabling Large Language Models to Generate Text with Citations
 
+This project replicates paper [Enabling Large Language Models to Generate Text with Citations](https://arxiv.org/abs/2305.14627). We adapted/forked the original codebase from https://github.com/princeton-nlp/ALCE, re-using their ALCE benchmark for evaluating citation quality, retrieval logic via GTA, and several utilities/helper functions that facilitated data processing and testing. Our project extends the original paper by introducing novel dataset QASA, which includes full scientific texts, and two prompting strategies, Chain-of-Thought and Tree-of-Thought. To read our paper, navigate to the pdf section in the main directory. 
+
 <p align="center"><img src="https://github.com/princeton-nlp/ALCE/blob/main/assets/moose.png?raw=true" alt="ALCE" width="15%"><br>*: ALCE is pronounced as /elk/ as ALCE is the Latin word for elk (Europe) or moose (North America).
 </p>
 
 
-
-This repository contains the code and data for paper [Enabling Large Language Models to Generate Text with Citations](https://arxiv.org/abs/2305.14627). 
 In this paper, we propose ALCE, a benchmark for **A**utomatic **L**LMs' **C**itation Evaluation. 
 ALCE contains three datasets: ASQA, QAMPARI, and ELI5.
 We provide automatic evaluation code of LLM generations around three dimensions: fluency, correctness, and citation quality. 
